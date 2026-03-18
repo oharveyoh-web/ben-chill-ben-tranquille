@@ -24,7 +24,7 @@
       <li><a href="#produits">Produits</a></li>
       <li><a href="#philosophie">Philosophie</a></li>
       <li><a href="#info">Info</a></li>
-      <li><a href="mailto:info@benchillbentranquille.com">Contact</a></li>
+      <li><a href="#infolettre">Infolettre</a></li>
     </ul>
   </nav>
 
@@ -117,6 +117,24 @@
     <p>Ben Chill Ben Tranquille, c'est plus qu'une marque — c'est un mode de vie. Fondée à Charlesbourg, Québec, BCBT représente l'art de prendre ça relax sans compromettre son style. Du streetwear retro-sport pensé ici, porté fièrement partout.</p>
   </section>
 
+  <!-- Newsletter Signup -->
+  <section class="newsletter-section" id="infolettre">
+    <h2 class="section-title">Reste dans le mood</h2>
+    <p class="section-subtitle">Inscris-toi pour être le premier au courant des drops, promos et nouveautés.</p>
+    <form class="newsletter-form" id="newsletter-form">
+      <div class="form-row">
+        <input type="text" name="name" placeholder="Ton prénom" required>
+        <input type="email" name="email" placeholder="Ton courriel" required>
+      </div>
+      <label class="checkbox-label">
+        <input type="checkbox" name="optin" checked>
+        <span>J'accepte de recevoir les courriels promotionnels de BCBT. Désabonnement possible en tout temps.</span>
+      </label>
+      <button type="submit" class="btn-subscribe">S'inscrire</button>
+    </form>
+    <p class="newsletter-note">Pas de spam. Juste du chill.</p>
+  </section>
+
   <!-- Info Section -->
   <section class="info-section" id="info">
     <div class="info-grid">
@@ -159,6 +177,17 @@
       <p>TPS/TVQ applicables selon la loi. Prix en dollars canadiens.</p>
     </div>
   </footer>
+
+  <!-- Cookie Banner -->
+  <div class="cookie-banner" id="cookie-banner">
+    <p>Ce site utilise des cookies pour améliorer votre expérience. En continuant, vous acceptez notre utilisation des cookies.</p>
+    <button class="btn-cookie" id="cookie-accept">Accepter</button>
+  </div>
+
+  <!-- Floating Contact Button -->
+  <a href="mailto:info@benchillbentranquille.com" class="floating-contact" aria-label="Nous contacter">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </a>
 
   <!-- Notification toast -->
   <div class="notification" id="notification"></div>
@@ -242,6 +271,32 @@
       el.classList.add('show');
       setTimeout(() => el.classList.remove('show'), 3000);
     }
+
+    // Newsletter form
+    document.getElementById('newsletter-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const name = e.target.name.value.trim();
+      const email = e.target.email.value.trim();
+      if (!email) return;
+
+      // TODO: Brancher Mailchimp API ici
+      // Pour l'instant, on stocke en localStorage comme fallback
+      const subscribers = JSON.parse(localStorage.getItem('bcbt-subscribers') || '[]');
+      subscribers.push({ name, email, date: new Date().toISOString() });
+      localStorage.setItem('bcbt-subscribers', JSON.stringify(subscribers));
+
+      showNotification('Merci ' + (name || 'ami') + '! Tu es maintenant dans le crew BCBT.');
+      e.target.reset();
+    });
+
+    // Cookie banner
+    if (!localStorage.getItem('bcbt-cookies-accepted')) {
+      document.getElementById('cookie-banner').classList.add('show');
+    }
+    document.getElementById('cookie-accept').addEventListener('click', () => {
+      localStorage.setItem('bcbt-cookies-accepted', 'true');
+      document.getElementById('cookie-banner').classList.remove('show');
+    });
 
     // Smooth scroll for nav
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
