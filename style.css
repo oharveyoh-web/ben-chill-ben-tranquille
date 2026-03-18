@@ -534,6 +534,145 @@ body {
   font-style: italic;
 }
 
+/* --- Email Popup --- */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  padding: 20px;
+}
+
+.popup-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.popup {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px 32px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  transform: translateY(20px) scale(0.95);
+  transition: transform 0.3s ease;
+}
+
+.popup-overlay.show .popup {
+  transform: translateY(0) scale(1);
+}
+
+.popup-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.6rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.popup-close:hover {
+  color: var(--text);
+}
+
+.popup-header {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+
+.popup-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.popup-text {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.popup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.popup-form input[type="email"] {
+  padding: 14px 16px;
+  background: #111;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.popup-form input[type="email"]::placeholder {
+  color: var(--text-muted);
+}
+
+.popup-form input[type="email"]:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.btn-popup-submit {
+  padding: 14px;
+  background: var(--gold);
+  color: #0a0a0a;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: background 0.2s;
+}
+
+.btn-popup-submit:hover {
+  background: var(--gold-hover);
+}
+
+.popup-skip {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-decoration: underline;
+  font-family: var(--font-body);
+  transition: color 0.15s;
+}
+
+.popup-skip:hover {
+  color: var(--text-light);
+}
+
 /* --- Cookie Banner --- */
 .cookie-banner {
   position: fixed;

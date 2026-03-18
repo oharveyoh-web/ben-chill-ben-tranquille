@@ -178,6 +178,21 @@
     </div>
   </footer>
 
+  <!-- Email Popup -->
+  <div class="popup-overlay" id="popup-overlay">
+    <div class="popup">
+      <button class="popup-close" id="popup-close" aria-label="Fermer">&times;</button>
+      <div class="popup-header">BCBT</div>
+      <h2 class="popup-title">Joins le crew</h2>
+      <p class="popup-text">Inscris-toi et sois le premier à savoir quand la collection drop. Pas de spam — juste du chill.</p>
+      <form class="popup-form" id="popup-form">
+        <input type="email" name="popup-email" placeholder="Ton courriel" required>
+        <button type="submit" class="btn-popup-submit">Je m'inscris</button>
+      </form>
+      <button class="popup-skip" id="popup-skip">Non merci, peut-être plus tard</button>
+    </div>
+  </div>
+
   <!-- Cookie Banner -->
   <div class="cookie-banner" id="cookie-banner">
     <p>Ce site utilise des cookies pour améliorer votre expérience. En continuant, vous acceptez notre utilisation des cookies.</p>
@@ -317,6 +332,40 @@
 
       showNotification('Merci ' + (name || 'ami') + '! Tu es maintenant dans le crew BCBT.');
       e.target.reset();
+    });
+
+    // Email popup — shows after 5 seconds, once per visitor
+    const popupOverlay = document.getElementById('popup-overlay');
+    const popupClose = document.getElementById('popup-close');
+    const popupSkip = document.getElementById('popup-skip');
+    const popupForm = document.getElementById('popup-form');
+
+    function closePopup() {
+      popupOverlay.classList.remove('show');
+      localStorage.setItem('bcbt-popup-seen', 'true');
+    }
+
+    if (!localStorage.getItem('bcbt-popup-seen')) {
+      setTimeout(() => popupOverlay.classList.add('show'), 5000);
+    }
+
+    popupClose.addEventListener('click', closePopup);
+    popupSkip.addEventListener('click', closePopup);
+    popupOverlay.addEventListener('click', e => {
+      if (e.target === popupOverlay) closePopup();
+    });
+
+    popupForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const email = e.target['popup-email'].value.trim();
+      if (!email) return;
+
+      const subscribers = JSON.parse(localStorage.getItem('bcbt-subscribers') || '[]');
+      subscribers.push({ name: '', email, date: new Date().toISOString(), source: 'popup' });
+      localStorage.setItem('bcbt-subscribers', JSON.stringify(subscribers));
+
+      closePopup();
+      showNotification('Bienvenue dans le crew BCBT!');
     });
 
     // Cookie banner
